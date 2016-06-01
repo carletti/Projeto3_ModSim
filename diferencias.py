@@ -6,7 +6,6 @@ import math
 
 def derivadas(I, t):
     # Parâmetros flutuantes
-    t =  # Ângulo de ataque
     A = 165.5 # Área da asa (cm2)
     m = 4.5 # massa do avião (g)
     vx = I[2] # Velocidade em x
@@ -19,16 +18,16 @@ def derivadas(I, t):
     S = 3 # Largura da asa (cm)
     # Funções
     v = ((vx**2)+(vy**2))**(1/2) # Velocidade
-    Ce = 2*math.pi*t # Coeficiente de empuxo
+    Ce = 2*math.pi*Cd0 # Coeficiente de empuxo
     Cdi = (Ce**2)/(math.pi*((S**2)/A)*e) # Coenficiente de ????
     Ca = Cd0*Cdi # Coeficiente de atrito
     E = (Ce*ro*(v**2)*A)/2 # Empuxo
     Fres = (Ca*ro*(v**2)*A)/2 # Força de resistência do ar 
     P = m*g # Força peso
-    Ex = E*(Vx/((Vx**2)+(Vy**2)**(1/2))
-    Ey = E*(Vy/((Vx**2)+(Vy**2)**(1/2))
-    Fresx = Fres*(Vx/((Vx**2)+(Vy**2)**(1/2))
-    Fresy = Fres*(Vx/((Vx**2)+(Vy**2)**(1/2))
+    Ex = E*(Vx/v)
+    Ey = E*(Vy/v)
+    Fresx = Fres*(Vx/((Vx**2)+(Vy**2)**(1/2)))
+    Fresy = Fres*(Vx/((Vx**2)+(Vy**2)**(1/2)))
     # Diferenciais 
     dxdt = vx
     dydt = vy
