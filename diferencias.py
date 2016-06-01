@@ -50,3 +50,46 @@ t = np.arange(0,10,0.0000001)
 r = odeint(derivadas, I0, t)
 
 # Plotagem dos gráficos
+# Gráfico posição X
+plt.plot(t, f[0])
+plt.ScalarFormatter(0, 0.00000001)
+plt.legend(loc = 'upper right')
+plt.ylabel('Distância x (cm)')
+plt.xlabel('Tempo (dias)')
+plt.title(r'Posição em X')
+plt.grid(True)
+plt.showm
+# Gráfico posição Y
+plt.plot(t, f[1])
+plt.ScalarFormatter(0, 0.00000001)
+plt.legend(loc = 'upper right')
+plt.ylabel('Distância y (cm)')
+plt.xlabel('Tempo (dias)')
+plt.title(r'Posição em Y')
+plt.grid(True)
+plt.showm
+# Gráfico Velocidade X
+plt.plot(t, f[2])
+plt.ScalarFormatter(0, 0.00000001)
+plt.legend(loc = 'upper right')
+plt.ylabel('Velocidade em x (cm/s)')
+plt.xlabel('Tempo (dias)')
+plt.title(r'Velocidade X')
+plt.grid(True)
+plt.showm
+# Gráfico Velocidade y
+plt.plot(t, f[3])
+plt.ScalarFormatter(0, 0.00000001)
+plt.legend(loc = 'upper right')
+plt.ylabel('Velocidade em y (cm/s)')
+plt.xlabel('Tempo (dias)')
+plt.title(r'Velocidade Y')
+plt.grid(True)
+plt.showm
+
+
+
+
+
+
+
