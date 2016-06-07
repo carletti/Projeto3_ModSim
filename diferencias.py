@@ -3,20 +3,28 @@ import matplotlib.pyplot as plt
 import numpy as np 
 from scipy.integrate import odeint 
 import math 
+#%matplolib inline
  
  
 def derivadas(I, t): 
     # Parâmetros flutuantes 
-    A = 165.5 # Área da asa (cm2) 
-    m = 4.5 # massa do avião (g) 
+    A = 0.01655 # Área da asa (cm2) 
+    m = 0.0045 # massa do avião (g) 
+#    x = I[0] # posição em x
+#    y = I[1] # posição em y
     vx = I[2] # Velocidade em x 
-    vy = I[3] # Velocidade em y 
+    vy = I[3] # Velocidade em y
+    a = I[4] # ângulo do avião em relação ao eixo X
+    o = I[5] # Velocidade ângular
+    
     # Parâmetros fixos    
     g = 9.8 # Gravidade 
-    ro =  1.2 
+    ro =  1.2 # Densidade do ar 
     Cd0 = 0.15 # Coeficiente de arrasto quando o ângulo de ataque é zero 
     e = 0.7 # Fator de eficiência da asa 
-    S = 3 # Largura da asa (cm) 
+    S = 0.03 # Largura da asa (cm) 
+    d = 0.10 # Distânciaentre o centro de massa e onde se aplica o impuxo (cm)
+    
     # Funções 
     v = ((vx**2)+(vy**2))**(1/2) # Velocidade 
     Ce = 2*math.pi*Cd0 # Coeficiente de empuxo 
@@ -25,28 +33,36 @@ def derivadas(I, t):
     E = (Ce*ro*(v**2)*A)/2 # Empuxo 
     Fres = (Ca*ro*(v**2)*A)/2 # Força de resistência do ar  
     P = m*g # Força peso 
-    Ex = E*(vx/v) 
-    Ey = E*(vy/v) 
-    Fresx = Fres*(vx/((vx**2)+(vy**2)**(1/2))) 
-    Fresy = Fres*(vy/((vx**2)+(vy**2)**(1/2))) 
-    # Diferenciais  
+    I = ((d**3)*m)/3 # Momento de inércia
+    Tr = I*o #torque
+
+    Ex = E*math.cos(a) 
+    Ey = E*math.sin(a)
+    Fresx = Fres*math.cos(a) 
+    Fresy = Fres*math.sin(a)
+    
+    # Diferenciais 
+    dadt = o
+    dodt = I/Tr
     dxdt = vx 
     dydt = vy 
     dvxdt = (Ex - Fresx)/m 
     dvydt = (Ey + Fresy - P)/m 
-    return [dxdt, dydt, dvxdt, dvydt] 
+    return [dxdt, dydt, dvxdt, dvydt, dadt, dodt] 
 
 
 # Condições iniciais     
 x0 = 0 #cm
-y0 = 40 #cm 
-vx0 = 316 #cm/s
-vy0 = 316 #cm/s  
-I0 = [x0, y0, vx0, vy0] 
+y0 = 0.7 #cm 
+vx0 = 3.16 #m/s
+vy0 = 3.16 #m/s
+a0 = 0 # Ângulo de lançamento
+o0 = 0 # Velocidade angular 
+I0 = [x0, y0, vx0, vy0, a0, o0] 
 
  
 # Lista tempo 
-t = np.arange(0,10,0.0000001) 
+t = np.arange(0,10,0.01) 
 
  
 # Chamada da odeint 
@@ -58,36 +74,35 @@ r = odeint(derivadas, I0, t)
 plt.plot(t, r[:, 0]) 
 #plt.ScalarFormatter(0, 0.00000001) 
 plt.legend(loc = 'upper right') 
-plt.ylabel('Distância x (cm)') 
-plt.xlabel('Tempo (dias)') 
+plt.ylabel('Distância x (m)') 
+plt.xlabel('Tempo (segundos)') 
 plt.title(r'Posição em X') 
 plt.grid(True) 
-plt.show
+plt.show()
 # Gráfico posição Y 
 plt.plot(t, r[:, 1]) 
 #plt.ScalarFormatter(0, 0.00000001) 
 plt.legend(loc = 'upper right') 
-plt.ylabel('Distância y (cm)') 
-plt.xlabel('Tempo (dias)') 
+plt.ylabel('Distância y (m)') 
+plt.xlabel('Tempo (segundos)') 
 plt.title(r'Posição em Y') 
 plt.grid(True) 
-plt.show
+plt.show()
 # Gráfico Velocidade X 
 plt.plot(t, r[:, 2]) 
 #plt.ScalarFormatter(0, 0.00000001) 
 plt.legend(loc = 'upper right') 
-plt.ylabel('Velocidade em x (cm/s)') 
-plt.xlabel('Tempo (dias)') 
+plt.ylabel('Velocidade em x (m/s)') 
+plt.xlabel('Tempo (segundos)') 
 plt.title(r'Velocidade X') 
 plt.grid(True) 
-plt.show
+plt.show()
 # Gráfico Velocidade y 
 plt.plot(t, r[:, 3]) 
 #plt.ScalarFormatter(0, 0.00000001) 
 plt.legend(loc = 'upper right') 
-plt.ylabel('Velocidade em y (cm/s)') 
-plt.xlabel('Tempo (dias)') 
+plt.ylabel('Velocidade em y (m/s)') 
+plt.xlabel('Tempo (segundos)') 
 plt.title(r'Velocidade Y') 
 plt.grid(True) 
-plt.show
-
+plt.show()
